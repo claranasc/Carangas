@@ -25,27 +25,26 @@ class REST {
     
     class func loadCars() {
         guard let url = URL(string: basePath) else {return}
-        
-        let dataTask = session.dataTask(with: url) {(data: Data?, response: URLResponse?, error: Error?) in
-            
+        let dataTask = session.dataTask(with: url) { (data: Data?, response: URLResponse?, error: Error?) in
             if error == nil {
-                
                 guard let response = response as? HTTPURLResponse else {return}
                 if response.statusCode == 200 {
-                    
                     guard let data = data else {return}
-                    
-                    
+                    do {
+                        let cars = try JSONDecoder().decode([Car].self, from: data)
+                        for car in cars {
+                            print(car.name, car.brand)
+                        }
+                    } catch {
+                        print(error.localizedDescription)
+                    }
                 } else {
                     print("Algum status inválido pelo servidor!!")
                 }
-                
             } else {
                 print(error!)
             }
-
         }
         dataTask.resume()
-        
     }
 }
