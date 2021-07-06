@@ -20,14 +20,14 @@ class AddEditViewController: UIViewController {
     
     // MARK: - Properties
     var car: Car!
-    
+        
     // MARK: - Super Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         if car != nil {
             tfBrand.text = car.brand
             tfName.text = car.name
-            tfPrice.text = "R$ \(car.price)"
+            tfPrice.text = "\(car.price)"
             scGasType.selectedSegmentIndex = car.gasType
             btAddEdit.setTitle("Alterar", for: .normal)
         }
