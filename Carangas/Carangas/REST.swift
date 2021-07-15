@@ -43,14 +43,12 @@ class REST {
             onComplete(nil)
             return
         }
-        
         let dataTask = session.dataTask(with: url) { (data: Data?, response: URLResponse?, error: Error?) in
             if error == nil {
                 guard let response = response as? HTTPURLResponse else {
                     onComplete(nil)
                     return
                 }
-                
                 if response.statusCode == 200 {
                     guard let data = data else {return}
                     do {
@@ -70,8 +68,6 @@ class REST {
         }
         dataTask.resume()
     }
-    
-    
     
     class func loadCars(onComplete: @escaping ([Car]) -> Void, onError: @escaping (CarError) -> Void) {
         guard let url = URL(string: basePath) else {
