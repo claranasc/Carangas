@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddEditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class AddEditViewController: UIViewController {
 
     // MARK: - IBOutlets
     @IBOutlet weak var tfBrand: UITextField!
@@ -49,7 +49,7 @@ class AddEditViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
         toolbar.items = [btCancel, btSpace, btDone]
         tfBrand.inputAccessoryView = toolbar
-        tfBrand.inputView = pic kerView
+        tfBrand.inputView = pickerView
     }
     
     // MARK: - IBActions
@@ -99,9 +99,23 @@ class AddEditViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     @objc func done() {
-        tfBrand.text = brands[pickerView.selectRow(inComponent: 0)].fipe_name
+        tfBrand.text = brands[pickerView.selectedRow(inComponent: 0)].fipe_name
         cancel()
     }
+}
+
+extension AddEditViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
     
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return brands.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        let brand = brands[row]
+        return brand.fipe_name
+    }
 }
