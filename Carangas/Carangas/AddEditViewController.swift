@@ -77,6 +77,17 @@ class AddEditViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     // MARK: - Methods
     
+    func loadBrands() {
+        REST.loadBrands { (brands) in
+            if let brands = brands {
+                self.brands = brands
+                DispatchQueue.main.async {
+                    self.pickerView.reloadAllComponents()
+                }
+            }
+        }
+    }
+    
     func goBack() {
         DispatchQueue.main.async {
             self.navigationController?.popViewController(animated: true)
