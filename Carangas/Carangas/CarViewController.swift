@@ -18,7 +18,6 @@ class CarViewController: UIViewController {
     // MARK: - Properties
     var car: Car!
     
-    
     // MARK: - Super Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +29,6 @@ class CarViewController: UIViewController {
         lbBrand.text = car.brand
         lbGasType.text = car.gas
         lbPrice.text = "R$ \(car.price)"
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

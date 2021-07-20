@@ -42,11 +42,9 @@ class AddEditViewController: UIViewController {
         
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44))
         toolbar.tintColor = UIColor(named: "main")
-        
         let btCancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
         let btSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let btDone = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
-        
         toolbar.items = [btCancel, btSpace, btDone]
         tfBrand.inputAccessoryView = toolbar
         tfBrand.inputView = pickerView
@@ -65,6 +63,7 @@ class AddEditViewController: UIViewController {
         if car == nil {
             car = Car()
         }
+        
         car.name = tfName.text!
         car.brand = tfBrand.text!
         if tfPrice.text!.isEmpty {tfPrice.text = "0"}
@@ -88,7 +87,7 @@ class AddEditViewController: UIViewController {
     func loadBrands() {
         REST.loadBrands { (brands) in
             if let brands = brands {
-                self.brands = brands.sorted(by: { $0.fipe_name < $1.fipe_name})
+                self.brands = brands.sorted(by: {$0.fipe_name < $1.fipe_name})
                 DispatchQueue.main.async {
                     self.pickerView.reloadAllComponents()
                 }
