@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import Foundation
 
 class CarViewController: UIViewController {
     
@@ -32,6 +33,17 @@ class CarViewController: UIViewController {
         lbBrand.text = car.brand
         lbGasType.text = car.gas
         lbPrice.text = "R$ \(car.price)"
+        
+        let name = (title! + "+" + car.brand).replacingOccurrences(of: " ", with: "+")
+        let urlString = "https://www.google.com.br/search?q=\(name)&tbm=isch"
+        let url = URL(string: urlString)!
+        let request = URLRequest(url: url)
+        
+        webView.allowsBackForwardNavigationGestures = true
+        webView.allowsLinkPreview = true
+        webView.navigationDelegate = self
+        webView.uiDelegate = self
+        webView.load(request)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -39,3 +51,11 @@ class CarViewController: UIViewController {
         vc.car = car
     }
 }
+
+extension CarViewController: WKNavigationDelegate, WKUIDelegate {
+    
+    
+    
+}
+
+
