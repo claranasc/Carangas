@@ -43,25 +43,23 @@ class REST {
             onComplete(nil)
             return
         }
-        
         let dataTask = session.dataTask(with: url) { (data: Data?, response: URLResponse?, error: Error?) in
             if error == nil {
                 guard let response = response as? HTTPURLResponse else {
                     onComplete(nil)
                     return
                 }
-                
                 if response.statusCode == 200 {
                     guard let data = data else {return}
                     do {
                         let brands = try JSONDecoder().decode([Brand].self, from: data)
                         onComplete(brands)
                     } catch {
-                        //print(error.localizedDescription)
+                        print(error.localizedDescription)
                         onComplete(nil)
                     }
                 } else {
-                    //print("Algum status inválido pelo servidor!!")
+                    print("Algum status inválido pelo servidor!!")
                     onComplete(nil)
                 }
             } else {
@@ -71,33 +69,26 @@ class REST {
         dataTask.resume()
     }
     
-    
-    
     class func loadCars(onComplete: @escaping ([Car]) -> Void, onError: @escaping (CarError) -> Void) {
         guard let url = URL(string: basePath) else {
             onError(.url)
             return
         }
-        
         let dataTask = session.dataTask(with: url) { (data: Data?, response: URLResponse?, error: Error?) in
             if error == nil {
                 guard let response = response as? HTTPURLResponse else {
                     onError(.noResponse)
                     return
                 }
-                
                 if response.statusCode == 200 {
                     guard let data = data else {return}
                     do {
                         let cars = try JSONDecoder().decode([Car].self, from: data)
                         onComplete(cars)
-                        
                     } catch {
-                        //print(error.localizedDescription)
                         onError(.invalidJSON)
                     }
                 } else {
-                    //print("Algum status inválido pelo servidor!!")
                     onError(.responseStatusCode(code: response.statusCode))
                 }
             } else {
@@ -119,19 +110,14 @@ class REST {
         applyOperation(car: car, operation: .delete, onComplete: onComplete)
     }
     
-    
     private class func applyOperation(car: Car, operation: RESTOperation, onComplete: @escaping (Bool) -> Void) {
-        
         let urlString = basePath + "/" + (car._id ?? "")
-        
         guard let url = URL(string: urlString) else {
             onComplete(false)
             return
         }
-        
         var httpMethod: String = ""
         var request = URLRequest(url: url)
-        
         switch operation {
         case .save:
             httpMethod = "POST"
@@ -140,7 +126,6 @@ class REST {
         case .delete:
             httpMethod = "DELETE"
         }
-
         request.httpMethod = httpMethod
         guard let json = try? JSONEncoder().encode(car) else {
             onComplete(false)

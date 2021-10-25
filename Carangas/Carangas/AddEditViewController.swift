@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddEditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class AddEditViewController: UIViewController {
 
     // MARK: - IBOutlets
     @IBOutlet weak var tfBrand: UITextField!
@@ -42,21 +42,28 @@ class AddEditViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44))
         toolbar.tintColor = UIColor(named: "main")
-        
         let btCancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
         let btSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let btDone = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
-        
         toolbar.items = [btCancel, btSpace, btDone]
         tfBrand.inputAccessoryView = toolbar
-        tfBrand.inputView = pic kerView
+        tfBrand.inputView = pickerView
+        
+        loadBrands()
     }
     
     // MARK: - IBActions
     @IBAction func addEdit(_ sender: UIButton) {
+        
+        sender.isEnabled = false
+        sender.backgroundColor = .gray
+        sender.alpha = 0.5
+        loading.startAnimating()
+        
         if car == nil {
             car = Car()
         }
+        
         car.name = tfName.text!
         car.brand = tfBrand.text!
         if tfPrice.text!.isEmpty {tfPrice.text = "0"}
@@ -77,6 +84,17 @@ class AddEditViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     // MARK: - Methods
     
+    func loadBrands() {
+        REST.loadBrands { (brands) in
+            if let brands = brands {
+                self.brands = brands.sorted(by: {$0.fipe_name < $1.fipe_name})
+                DispatchQueue.main.async {
+                    self.pickerView.reloadAllComponents()
+                }
+            }
+        }
+    }
+    
     func goBack() {
         DispatchQueue.main.async {
             self.navigationController?.popViewController(animated: true)
@@ -88,9 +106,23 @@ class AddEditViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     @objc func done() {
-        tfBrand.text = brands[pickerView.selectRow(inComponent: 0)].fipe_name
+        tfBrand.text = brands[pickerView.selectedRow(inComponent: 0)].fipe_name
         cancel()
     }
+}
+
+extension AddEditViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
     
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return brands.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        let brand = brands[row]
+        return brand.fipe_name
+    }
 }
