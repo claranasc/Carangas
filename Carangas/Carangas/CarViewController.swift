@@ -56,8 +56,5 @@ extension CarViewController: WKNavigationDelegate, WKUIDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         loading.stopAnimating()
-    }
-    
+    }    
 }
-
-

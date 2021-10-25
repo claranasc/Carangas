@@ -225,8 +225,8 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="25i-sd-rNR">
-                                <rect key="frame" x="177.5" y="436" width="20" height="20"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="25i-sd-rNR">
+                                <rect key="frame" x="169" y="427.5" width="37" height="37"/>
                                 <color key="color" name="main"/>
                             </activityIndicatorView>
                         </subviews>
